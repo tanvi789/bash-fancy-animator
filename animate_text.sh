@@ -52,11 +52,17 @@ print_heart() {
   echo -ne "${reset}"
 }
 
+function cleanup() {
+    tput cnorm
+}
+
 # Main loop to animate the text
 animate_text() {
   local text="$1"
   local rotations=0
   local length=${#text}
+
+  tput civis # Hide cursor
 
   while (( rotations <= 3*length )); do
     print_rainbow "$text"
@@ -70,6 +76,8 @@ animate_text() {
 
   # Print the heart at the end
   print_heart
+
+  trap cleanup EXIT # Cleanup on exit
 }
 
 # Check if text is provided
